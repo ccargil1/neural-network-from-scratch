@@ -1,7 +1,10 @@
 import numpy as np
 
-def cross_entropy(predictions: np.ndarray, target: int) -> float:
-    p_correct: float = predictions[target][0]
+def cross_entropy(predictions: np.ndarray, target: np.ndarray) -> float:
+    batchSize: int = predictions.shape[1]
+    indices = np.arange(batchSize)
+    
+    p_correct = predictions[target, indices]
     clipped = np.clip(p_correct, (10 ** -15), 1)
     
-    return -np.log(clipped)
+    return -np.mean(np.log(clipped))

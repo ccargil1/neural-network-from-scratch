@@ -26,13 +26,16 @@ class NeuralNetwork:
         self.predictions = softmax(x)
         return self.predictions
     
-    def backward(self, target: int) -> None:
+    def backward(self, target: np.ndarray) -> None:
         length = len(self.layers)
         
-        target_vector = np.zeros_like(self.predictions)
-        target_vector[target] = 1
+        batchSize: int = self.predictions.shape[1]
+        indices = np.arange(batchSize)
         
-        grad = self.predictions - target_vector
+        target_vector = np.zeros_like(self.predictions)
+        target_vector[target, indices] = 1
+        
+        grad = (self.predictions - target_vector) / batchSize
         
         for i, layer in enumerate(reversed(self.layers)):
             index = length - 1 - i
@@ -45,7 +48,7 @@ class NeuralNetwork:
         for layer in self.layers:
             layer.update(learning_rate)
             
-    def train_step(self, x: np.ndarray, target: int, learning_rate: float) -> float:
+    def train_step(self, x: np.ndarray, target: np.ndarray, learning_rate: float) -> float:
         predictions = self.forward(x)
         loss = cross_entropy(predictions, target)
         

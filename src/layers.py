@@ -13,7 +13,7 @@ class Dense:
     
     def backward(self, grad_output: np.ndarray) -> np.ndarray:
         self.grad_weights = grad_output @ self.input.T
-        self.grad_biases = grad_output
+        self.grad_biases = np.sum(grad_output, axis=1, keepdims=True)
         return self.weights.T @ grad_output
     
     def update(self, learning_rate: float) -> None:

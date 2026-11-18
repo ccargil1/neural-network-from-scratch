@@ -1,9 +1,0 @@
-{
-    "terminal.integrated.env.osx": {
-        "PYTHONPATH": "${workspaceFolder}"
-    },
-
-    "python.analysis.diagnosticSeverityOverrides": {
-        "reportMissingTypeStubs": "none"
-    }
-}
