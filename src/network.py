@@ -1,5 +1,6 @@
 from src.layers import Dense
-from src.activations import relu, softmax
+from src.activations import relu, relu_derivative, softmax
+from src.losses import cross_entropy
 import numpy as np
 
 class NeuralNetwork:
@@ -21,5 +22,34 @@ class NeuralNetwork:
             
             if i + 1 != length:
                 x = relu(x)
+        
+        self.predictions = softmax(x)
+        return self.predictions
+    
+    def backward(self, target: int) -> None:
+        length = len(self.layers)
+        
+        target_vector = np.zeros_like(self.predictions)
+        target_vector[target] = 1
+        
+        grad = self.predictions - target_vector
+        
+        for i, layer in enumerate(reversed(self.layers)):
+            index = length - 1 - i
+            grad = layer.backward(grad)
+            
+            if index > 0:
+                grad *= relu_derivative(self.pre_activations[index - 1])
                 
-        return softmax(x)
+    def update(self, learning_rate: float) -> None:
+        for layer in self.layers:
+            layer.update(learning_rate)
+            
+    def train_step(self, x: np.ndarray, target: int, learning_rate: float) -> float:
+        predictions = self.forward(x)
+        loss = cross_entropy(predictions, target)
+        
+        self.backward(target)
+        self.update(learning_rate)
+        
+        return loss
