@@ -1,6 +1,8 @@
 # Neural Network from Scratch
 A fully connected neural network built from scratch using **Python and NumPy** to recognize handwritten digits from the MNIST dataset.
+
 This project implements the fundamental mathematics behind neural networks, including forward propagation, backpropagation, activation functions, cross-entropy loss, and gradient descent.
+
 **No machine learning frameworks such as TensorFlow or PyTorch were used.**
 
 ## Results
@@ -24,6 +26,7 @@ The network consists of an input layer, two hidden layers, and an output layer.
 | Output | 10 | Softmax |
 
 Each input is a **28 x 28 grayscale image,** flattened into a vector of 784 normalized pixel values.
+
 The output layer produces a probability distribution across the ten possible digits (0-9).
 
 ## Training Configuration
@@ -89,6 +92,7 @@ Create a virtual environment:
 python -m venv .venv
 ```
 Activate the virtual environment.
+
 **Windows:**
 ```bash
 .venv\Scripts\activate
