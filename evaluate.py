@@ -1,7 +1,7 @@
 from pathlib import Path
-from src.network import NeuralNetwork
-from src.layers import Dense
-from src.data import load_mnist
+from neural_network.network import NeuralNetwork
+from neural_network.layers import Dense
+from neural_network.data import load_mnist
 import numpy as np
 
 model_path = Path("models/best_model.npz")

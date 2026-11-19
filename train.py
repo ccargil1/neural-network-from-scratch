@@ -1,6 +1,6 @@
-from src.data import load_mnist, shuffle_mnist
-from src.network import NeuralNetwork
-from src.layers import Dense
+from neural_network.data import load_mnist, shuffle_mnist
+from neural_network.network import NeuralNetwork
+from neural_network.layers import Dense
 import numpy as np
 
 BATCH_SIZE = 32

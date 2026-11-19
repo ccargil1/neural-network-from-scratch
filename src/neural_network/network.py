@@ -1,6 +1,6 @@
-from src.layers import Dense
-from src.activations import relu, relu_derivative, softmax
-from src.losses import cross_entropy
+from neural_network.layers import Dense
+from neural_network.activations import relu, relu_derivative, softmax
+from neural_network.losses import cross_entropy
 import numpy as np
 
 class NeuralNetwork:
