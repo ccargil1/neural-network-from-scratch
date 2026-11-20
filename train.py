@@ -53,7 +53,7 @@ for i in range(EPOCHS):
         
         total_loss += network.train_step(batch, batch_labels, LEARNING_RATE) * (end - start)
 
-    print(f"Epoch {i + 1}/{EPOCHS}", end=" | ")
+    print(f"Epoch {" " if i + 1 < 10 else ""}{i + 1}/{EPOCHS}", end=" | ")
 
     average_loss = total_loss / imagesSize
     print(f"Training average loss: {average_loss:.4f}", end=" | ")
