@@ -1,6 +1,6 @@
-from neural_network.data import load_mnist, shuffle_mnist
-from neural_network.network import NeuralNetwork
-from neural_network.layers import Dense
+from src.neural_network.data import load_mnist, shuffle_mnist
+from src.neural_network.network import NeuralNetwork
+from src.neural_network.layers import Dense
 from pathlib import Path
 import numpy as np
 
