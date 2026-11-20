@@ -1,6 +1,7 @@
 from neural_network.data import load_mnist, shuffle_mnist
 from neural_network.network import NeuralNetwork
 from neural_network.layers import Dense
+from pathlib import Path
 import numpy as np
 
 BATCH_SIZE = 32
@@ -24,6 +25,14 @@ network.add_layer(Dense(128, 64))
 network.add_layer(Dense(64, 10))
 
 best_accuracy = 0.0
+saved_best_accuracy = 0.0
+
+model_path = Path("models/best_model.npz")
+if model_path.exists():
+    with np.load(model_path) as saved_data:
+        if "best_accuracy" in saved_data.files:
+            saved_best_accuracy = float(saved_data["best_accuracy"])
+
 best_weights = [layer.weights.copy() for layer in network.layers]
 best_biases = [layer.biases.copy() for layer in network.layers]
 
@@ -62,14 +71,10 @@ for i in range(EPOCHS):
         
         best_weights = [layer.weights.copy() for layer in network.layers]
         best_biases = [layer.biases.copy() for layer in network.layers]
-    
-model_data: dict[str, np.ndarray] = {}
+   
 for i, layer in enumerate(network.layers):
     layer.weights = best_weights[i]
     layer.biases = best_biases[i]
-    
-    model_data[f"weights_{i}"] = layer.weights
-    model_data[f"biases_{i}"] = layer.biases
     
 validation_predictions = network.forward(validation_batch)
 predicted_digits = np.argmax(validation_predictions, axis=0)
@@ -80,4 +85,13 @@ accuracy: float = np.mean(correct_predictions)
 print(f"Best accuracy: {best_accuracy * 100:.2f}%")
 print(f"Restored accuracy: {accuracy * 100:.2f}%")
 
-np.savez("models/best_model.npz", **model_data)  # pyright: ignore[reportArgumentType]
+if best_accuracy > saved_best_accuracy:
+    model_data: dict[str, np.ndarray | float] = {}
+    for i, layer in enumerate(network.layers):
+        model_data[f"weights_{i}"] = layer.weights
+        model_data[f"biases_{i}"] = layer.biases
+    model_data["best_accuracy"] = best_accuracy
+
+    model_path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez(model_path, **model_data)  # pyright: ignore[reportArgumentType]
+    print("New best model saved!")
